@@ -19,12 +19,13 @@ type CommandDefinition struct {
 }
 
 type Configuration struct {
-	BasePATH string
-	Commands map[string]CommandDefinition `yml:"commands"`
+	BasePATH  string
+	TerunFile string
+	Commands  map[string]CommandDefinition `yml:"commands"`
 }
 
 func (c *Configuration) getConfigurationYMLToCommandDefinition() (*Configuration, error) {
-	yamlFile, err := ioutil.ReadFile(filepath.Join(c.BasePATH, "terun.yml"))
+	yamlFile, err := ioutil.ReadFile(filepath.Join(c.BasePATH, c.TerunFile))
 	if err != nil {
 		return c, err
 	}
@@ -50,8 +51,9 @@ func (t *Configuration) readFile(path string) (string, error) {
 	return string(dat), nil
 }
 
-func createConfiguration(basePath string) *Configuration {
+func createConfiguration(basePath string, terunFile string) *Configuration {
 	return &Configuration{
-		BasePATH: basePath,
+		BasePATH:  basePath,
+		TerunFile: terunFile,
 	}
 }

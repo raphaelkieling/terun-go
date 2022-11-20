@@ -111,6 +111,6 @@ func (t *Terun) Make(command string) error {
 
 func createTerun(path string) *Terun {
 	return &Terun{
-		Configuration: createConfiguration(path),
+		Configuration: createConfiguration(path, "terun.yml"),
 	}
 }
