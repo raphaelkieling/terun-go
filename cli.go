@@ -10,11 +10,11 @@ import (
 func startCLI() {
 	app := &cli.App{
 		Name:  "terun",
-		Usage: "Tool the transport template files",
+		Usage: "Tool to transport template files",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:  "base",
-				Usage: "It's to set the terun.yml folder base",
+				Usage: "It's to set the terun.yml folder base. Default: current folder",
 			},
 		},
 		Commands: []*cli.Command{
