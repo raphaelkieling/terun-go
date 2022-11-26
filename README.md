@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="100px" src="./logo.png">
+  <img width="200px" src="./logo.png">
 </p>
 <h1 align="center">Terun</h1>
 
