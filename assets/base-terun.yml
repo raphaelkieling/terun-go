@@ -3,8 +3,8 @@ commands:
     args:
       - EntityName
     transports:
-      - from: controller.template
-        to: "{{.EntityName}}.py"
+      - from: ./controller.template
+        to: "./{{.EntityName | underscore | lowercase }}_controller.py"
         name: "Controller file"
         args:
           - Type

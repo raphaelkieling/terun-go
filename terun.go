@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
+	"unicode"
 
 	"golang.org/x/exp/maps"
 )
@@ -43,9 +45,35 @@ func (t *Terun) Init() error {
 	return nil
 }
 
+func (t *Terun) createFuncMap() template.FuncMap {
+	return template.FuncMap{
+		"lowercase": func(value string) string {
+			return strings.ToLower(value)
+		},
+		"uppercase": func(value string) string {
+			return strings.ToUpper(value)
+		},
+		"underscore": func(value string) string {
+			// convert every letter to lower case
+			var words []string
+			l := 0
+			for s := value; s != ""; s = s[l:] {
+				l = strings.IndexFunc(s[1:], unicode.IsUpper) + 1
+				if l <= 0 {
+					l = len(s)
+				}
+				words = append(words, s[:l])
+			}
+
+			return strings.Join(words, "_")
+		},
+	}
+}
+
 func (t *Terun) Make(command string) error {
 	fmt.Printf("🧰 Executing command: %s\n", command)
 	defaultTemplate := template.New("worker")
+	defaultTemplate.Funcs(t.createFuncMap())
 
 	// 1 - Get command
 	commandItem, err := t.getCommand(command)
@@ -73,7 +101,10 @@ func (t *Terun) Make(command string) error {
 		// 3.2 - Read from file
 		var outputFromPath bytes.Buffer
 		defaultTemplate.Parse(transport.From)
-		_ = defaultTemplate.Execute(&outputFromPath, localStore)
+		err = defaultTemplate.Execute(&outputFromPath, localStore)
+		if err != nil {
+			return err
+		}
 
 		fromFilePath := t.Configuration.getTransportFullPath(outputFromPath.String())
 		fileContent, err := t.Configuration.readFile(fromFilePath)
@@ -84,12 +115,18 @@ func (t *Terun) Make(command string) error {
 		// 3.3 - Build from `from` content file
 		var outputFromContent bytes.Buffer
 		defaultTemplate.Parse(fileContent)
-		_ = defaultTemplate.Execute(&outputFromContent, localStore)
+		err = defaultTemplate.Execute(&outputFromContent, localStore)
+		if err != nil {
+			return err
+		}
 
 		// 3.4 - Transport the result for the `to` property
 		var outputToPath bytes.Buffer
 		defaultTemplate.Parse(transport.To)
-		_ = defaultTemplate.Execute(&outputToPath, localStore)
+		err = defaultTemplate.Execute(&outputToPath, localStore)
+		if err != nil {
+			return err
+		}
 
 		toFilePath := t.Configuration.getTransportFullPath(outputToPath.String())
 		os.WriteFile(toFilePath, outputFromContent.Bytes(), 0644)

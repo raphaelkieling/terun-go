@@ -21,20 +21,83 @@ Start the `terun.yml`:
 terun init
 ```
 
-Define your template independente of language:
+That will create this file:
 
-```javascript
-// file: from.template
-class {{.EntityName | capitalize}}Entity{
+```yml
+commands:
+  example:
+    args:
+      - EntityName
+    transports:
+      - from: ./controller.template
+        to: "./{{.EntityName | underscore | lowercase }}_controller.py"
+        name: "Controller file"
+        args:
+          - CreatedBy
+```
+
+Define your template independente of language, in this example i created a file called `controller.template`
+
+> template extension is a recommendation, but feel free to put `anyname.py` or `anyname.js`
+
+```py
+## file: controller.template
+
+# author: {{.CreatedBy}}
+class {{.EntityName}}Entity{
     constructor(){}
 }
 ```
 
-Run on terminal `terun make example`:
+Run the command `terun make example`, when the global argument request an input you can type `FastPerson` and `My name` for the local argument.
 
-```javascript
-// file: person.py
-class PersonEntity {
+That's the output:
+
+```py
+## file: fast_person_controller.py
+
+# author: My name
+class FastPersonEntity {
   constructor() {}
 }
+```
+
+# Advanced
+
+## Recommendations
+
+- Create a folder called `terun` inside your project to allow another devs to reuse the same templates.
+- Ever use relative path inside the configuration to avoid problem between environments
+- Use a template folder to store your templates. It will keep the `terun` folder tidy.
+
+```diff
+my_project/
+  main.js
+  ...
+++terun/
+++  terun.yml
+++  templates/
+++    controller.template
+++    service.template
+++    repository.template
+```
+
+## Pipeline Operators
+
+| command      | input     | output    |
+| ------------ | --------- | --------- |
+| `lowercase`  | `My Name` | `my name` |
+| `uppercase`  | `My Name` | `MY NAME` |
+| `underscore` | `My Name` | `My_Name` |
+
+Inside the template you can use:
+
+```
+{{.Name | lowercase}}
+```
+
+Also you are able to use multiples pipelines in the same time.
+
+```
+{{.Name | underscore | lowercase}}
 ```

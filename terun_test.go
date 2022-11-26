@@ -28,7 +28,7 @@ func TestShouldInitFileYML(t *testing.T) {
 type ArgsMock struct{}
 
 func (a *ArgsMock) ReadGlobalArg(argKey string) string {
-	return "Person"
+	return "FastPerson"
 }
 func (a *ArgsMock) ReadLocalArg(argKey string) string {
 	return ""
@@ -53,9 +53,9 @@ func TestShouldTransportFile(t *testing.T) {
 		t.Error("Error on transport the files: " + err.Error())
 	}
 
-	transportedFile, _ := os.ReadFile(filepath.Join(tempDir, "Person.py"))
+	transportedFile, _ := os.ReadFile(filepath.Join(tempDir, "fast_person_controller.py"))
 
-	if string(transportedFile) != "class PersonEntity{\n    constructor(){}\n}" {
+	if string(transportedFile) != "class FastPersonEntity{\n    constructor(){}\n}" {
 		t.Error("Content transported are different")
 	}
 }
