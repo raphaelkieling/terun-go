@@ -47,7 +47,7 @@ func startCLI() {
 			},
 			{
 				Name:    "init",
-				Aliases: []string{"m"},
+				Aliases: []string{"i"},
 				Usage:   "Create the base file for commands",
 				Action: func(cCtx *cli.Context) error {
 					var basePath string

@@ -5,7 +5,7 @@
 
 > It's alpha version using golang. Do not use yet.
 
-Tool to generate files **easily** and **quickly** based on templates.
+Terun is a file transporter, created to help you with big architecture that demands a lot of boilerplate files.
 
 ## Install
 

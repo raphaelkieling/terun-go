@@ -12,6 +12,7 @@ import (
 
 type Terun struct {
 	Configuration *Configuration
+	ArgsReader    ArgsReader
 }
 
 func (t *Terun) getCommand(command string) (CommandDefinition, error) {
@@ -55,11 +56,7 @@ func (t *Terun) Make(command string) error {
 	// 2 - Request global arguments
 	argumentsStore := make(map[string]string)
 	for _, arg := range commandItem.Args {
-		fmt.Printf("🌍 Enter global arg \"%s\" value: ", arg)
-		var contentArg string
-		fmt.Scanf("%s", &contentArg)
-
-		argumentsStore[arg] = contentArg
+		argumentsStore[arg] = t.ArgsReader.ReadGlobalArg(arg)
 	}
 
 	// 3 - Go through each transport
@@ -70,11 +67,7 @@ func (t *Terun) Make(command string) error {
 		fmt.Printf("📦 Reading: %s\n", transport.Name)
 		// 3.1 - Request the arguments
 		for _, arg := range transport.Args {
-			fmt.Printf("	Enter local arg \"%s\" value: ", arg)
-			var contentArg string
-			fmt.Scanf("%s", &contentArg)
-
-			localStore[arg] = contentArg
+			localStore[arg] = t.ArgsReader.ReadLocalArg(arg)
 		}
 
 		// 3.2 - Read from file
@@ -109,8 +102,9 @@ func (t *Terun) Make(command string) error {
 	return nil
 }
 
-func createTerun(path string) *Terun {
+func createTerun(basePath string) *Terun {
 	return &Terun{
-		Configuration: createConfiguration(path, "terun.yml"),
+		Configuration: createConfiguration(basePath, "terun.yml"),
+		ArgsReader:    createArgsConsole(),
 	}
 }
