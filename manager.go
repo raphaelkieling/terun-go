@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"os"
 	"strings"
 	"text/template"
 	"unicode"
@@ -116,7 +115,11 @@ func (t *Terun) Make(command string) error {
 		}
 
 		toFilePath := t.Configuration.getTransportFullPath(outputToPath.String())
-		os.WriteFile(toFilePath, outputFromContent.Bytes(), 0644)
+		err = t.Configuration.writeFile(toFilePath, outputFromContent.Bytes())
+		if err != nil {
+			return err
+		}
+
 		fmt.Println("	✅ Done!")
 
 	}
@@ -128,7 +131,7 @@ func (t *Terun) Make(command string) error {
 
 func createTerun(basePath string) *Terun {
 	return &Terun{
-		Configuration: createConfiguration(basePath, "terun.yml"),
+		Configuration: createConfiguration(basePath, "terun.yml", "base-terun.yml"),
 		ArgsReader:    createArgsConsole(),
 	}
 }

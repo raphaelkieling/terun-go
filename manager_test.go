@@ -8,7 +8,10 @@ import (
 
 func TestShouldInitFileYML(t *testing.T) {
 	tempDir := t.TempDir()
-	terun := createTerun(tempDir)
+	terun := Terun{
+		Configuration: createConfiguration(tempDir, "terun.yml", "multi-folder-terun.yml"),
+		ArgsReader:    createArgsConsole(),
+	}
 
 	err := terun.Init()
 
@@ -18,7 +21,7 @@ func TestShouldInitFileYML(t *testing.T) {
 
 	file, _ := os.ReadFile(filepath.Join(tempDir, "terun.yml"))
 	currentDir, _ := os.Getwd()
-	expectedFileContent, _ := os.ReadFile(filepath.Join(currentDir, "assets", "base-terun.yml"))
+	expectedFileContent, _ := os.ReadFile(filepath.Join(currentDir, "assets", "multi-folder-terun.yml"))
 
 	if string(file) != string(expectedFileContent) {
 		t.Error("The content are different")
@@ -37,7 +40,7 @@ func (a *ArgsMock) ReadLocalArg(argKey string) string {
 func TestShouldTransportFile(t *testing.T) {
 	tempDir := t.TempDir()
 	terun := Terun{
-		Configuration: createConfiguration(tempDir, "terun.yml"),
+		Configuration: createConfiguration(tempDir, "terun.yml", "multi-folder-terun.yml"),
 		ArgsReader:    &ArgsMock{},
 	}
 
@@ -53,7 +56,7 @@ func TestShouldTransportFile(t *testing.T) {
 		t.Error("Error on transport the files: " + err.Error())
 	}
 
-	transportedFile, _ := os.ReadFile(filepath.Join(tempDir, "fast_person_controller.py"))
+	transportedFile, _ := os.ReadFile(filepath.Join(tempDir, "multi", "folder", "fast_person_controller.py"))
 
 	if string(transportedFile) != "class FastPersonEntity{\n    constructor(){}\n}" {
 		t.Error("Content transported are different")

@@ -1,0 +1,10 @@
+commands:
+  example:
+    args:
+      - EntityName
+    transports:
+      - from: ./controller.template
+        to: "./multi/folder/{{.EntityName | underscore | lowercase }}_controller.py"
+        name: "Controller file"
+        args:
+          - Type

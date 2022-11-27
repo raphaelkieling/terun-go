@@ -23,9 +23,10 @@ type CommandDefinition struct {
 }
 
 type Configuration struct {
-	BasePATH  string
-	TerunFile string
-	Commands  map[string]CommandDefinition `yml:"commands"`
+	BasePATH       string
+	TerunFile      string
+	TerunAssetFile string
+	Commands       map[string]CommandDefinition `yml:"commands"`
 }
 
 func (c *Configuration) getConfigurationYMLToCommandDefinition() (*Configuration, error) {
@@ -47,7 +48,7 @@ func (c *Configuration) getTransportFullPath(rest string) string {
 }
 
 func (t *Configuration) createConfigurationFile() error {
-	fileContent, err := assets.ReadFile("assets/base-terun.yml")
+	fileContent, err := assets.ReadFile("assets/" + t.TerunAssetFile)
 	if err != nil {
 		return err
 	}
@@ -70,9 +71,25 @@ func (t *Configuration) readFile(path string) (string, error) {
 	return string(dat), nil
 }
 
-func createConfiguration(basePath string, terunFile string) *Configuration {
+func (t *Configuration) writeFile(path string, content []byte) error {
+	directorypath := filepath.Dir(path)
+	err := os.MkdirAll(directorypath, os.ModePerm)
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(path, content, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func createConfiguration(basePath string, terunFile string, terunAssetFile string) *Configuration {
 	return &Configuration{
-		BasePATH:  basePath,
-		TerunFile: terunFile,
+		BasePATH:       basePath,
+		TerunFile:      terunFile,
+		TerunAssetFile: terunAssetFile,
 	}
 }

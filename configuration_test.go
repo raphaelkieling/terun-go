@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func TestShouldReadTerunFile(t *testing.T) {
-	conf := createConfiguration("./assets", "base-terun.yml")
+	conf := createConfiguration("./assets", "base-terun.yml", "base-terun.yml")
 	currConf, _ := conf.getConfigurationYMLToCommandDefinition()
 
 	if len(currConf.Commands) == 0 {
@@ -12,7 +12,7 @@ func TestShouldReadTerunFile(t *testing.T) {
 }
 
 func TestShouldThrowErrorIfDoNotExistFile(t *testing.T) {
-	conf := createConfiguration("./assets-error", "base-terun.yml")
+	conf := createConfiguration("./assets", "terun.yml", "base-terun.yml")
 	_, err := conf.getConfigurationYMLToCommandDefinition()
 
 	if err == nil {
