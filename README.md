@@ -5,6 +5,8 @@
 
 > It's alpha version using golang. Do not use yet.
 
+[![CodeFactor](https://www.codefactor.io/repository/github/raphaelkieling/terun-go/badge)](https://www.codefactor.io/repository/github/raphaelkieling/terun-go)
+
 Terun is a file transporter, created to help you with big architecture that demands a lot of boilerplate files.
 
 ## Install
