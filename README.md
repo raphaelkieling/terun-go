@@ -10,7 +10,7 @@ Terun is a file transporter, created to help you with big architecture that dema
 ## Install
 
 ```
-brew install terun
+brew install raphaelkieling/terun/terun
 ```
 
 ## Example
