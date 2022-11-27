@@ -64,7 +64,7 @@ class FastPersonEntity {
 
 # Advanced
 
-## Recommendations
+### Recommendations
 
 - Create a folder called `terun` inside your project to allow another devs to reuse the same templates.
 - Ever use relative path inside the configuration to avoid problem between environments
@@ -82,7 +82,18 @@ my_project/
 ++    repository.template
 ```
 
-## Pipeline Operators
+### Template
+
+We are using [golang template engine](https://pkg.go.dev/text/template) that accepts:
+- Conditional rendering
+- Pipeline functions
+- Comments
+- Foreach
+- ...
+
+### Terun Pipeline Operators
+
+We added some operators inside the buildin golang template engine. That are:
 
 | command      | input     | output    |
 | ------------ | --------- | --------- |
