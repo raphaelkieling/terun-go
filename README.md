@@ -13,7 +13,7 @@ Terun is a file transporter, created to help you with big architecture that dema
 brew install raphaelkieling/terun/terun
 ```
 
-## Example
+## Using
 
 Start the `terun.yml`:
 
