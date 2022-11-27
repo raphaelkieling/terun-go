@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 	"text/template"
 	"unicode"
@@ -23,19 +22,7 @@ func (t *Terun) getCommand(command string) (CommandDefinition, error) {
 }
 
 func (t *Terun) Init() error {
-	path, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-
-	currentBaseTerunFile := filepath.Join(path, "./assets/base-terun.yml")
-	fileContent, err := t.Configuration.readFile(currentBaseTerunFile)
-	if err != nil {
-		return err
-	}
-
-	terunBasePath := filepath.Join(t.Configuration.BasePATH, "terun.yml")
-	err = os.WriteFile(terunBasePath, []byte(fileContent), 0644)
+	err := t.Configuration.createConfigurationFile()
 	if err != nil {
 		return err
 	}

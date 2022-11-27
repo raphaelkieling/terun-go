@@ -1,12 +1,16 @@
 package main
 
 import (
+	"embed"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 
 	"gopkg.in/yaml.v2"
 )
+
+//go:embed assets/*
+var assets embed.FS
 
 type CommandDefinition struct {
 	Args       []string `yml:"args"`
@@ -40,6 +44,21 @@ func (c *Configuration) getConfigurationYMLToCommandDefinition() (*Configuration
 
 func (c *Configuration) getTransportFullPath(rest string) string {
 	return filepath.Join(c.BasePATH, rest)
+}
+
+func (t *Configuration) createConfigurationFile() error {
+	fileContent, err := assets.ReadFile("assets/base-terun.yml")
+	if err != nil {
+		return err
+	}
+
+	terunBasePath := filepath.Join(t.BasePATH, "terun.yml")
+	err = os.WriteFile(terunBasePath, []byte(fileContent), 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (t *Configuration) readFile(path string) (string, error) {
