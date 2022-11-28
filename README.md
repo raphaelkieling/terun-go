@@ -5,7 +5,8 @@
 
 > It's alpha version using golang. Do not use yet.
 
-[![CodeFactor](https://www.codefactor.io/repository/github/raphaelkieling/terun-go/badge)](https://www.codefactor.io/repository/github/raphaelkieling/terun-go)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/401dcc89433b42cbbf0c8248c3bd806c)](https://www.codacy.com/gh/raphaelkieling/terun-go/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=raphaelkieling/terun-go&amp;utm_campaign=Badge_Grade)
+[![.github/workflows/release.yml](https://github.com/raphaelkieling/terun-go/actions/workflows/release.yml/badge.svg)](https://github.com/raphaelkieling/terun-go/actions/workflows/release.yml)
 
 Terun is a file transporter, created to help you with big architecture that demands a lot of boilerplate files.
 
